@@ -1,0 +1,45 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  /* border: solid 1px; */
+}
+body {
+  background-color: #cac7c7 !important;
+}
+
+.border {
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.itemImg {
+  width: 70%;
+  height: 200px;
+}
+
+.p-grid-item {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.p-item-title {
+  text-align: left !important;
+  padding-top: 10px;
+}
+.p-item-Cat {
+  text-align: left !important;
+  text-decoration: underline;
+}
+
+
+.p-item-desc, .p-item-price{
+  text-align: -webkit-left;
+  overflow-wrap: anywhere;
+}
+
+.hide{
+  display: none !important;
+}
