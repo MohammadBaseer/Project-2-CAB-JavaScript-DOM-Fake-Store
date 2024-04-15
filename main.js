@@ -3,7 +3,7 @@
 function printCategoryToArray(api) {
   const catSelect = document.querySelector("#byCat");
 
-  const uniqueByCategory = apikey.filter((value, index, array) => {
+  const uniqueByCategory = api.filter((value, index, array) => {
     return (
       array.findIndex((item) => item.category === value.category) === index
     );
@@ -21,6 +21,53 @@ printCategoryToArray(apikey);
 
 //
 
+
+
+
+function test(api) {
+const selvalue = document.querySelector("#byCat");
+
+// selvalue.addEventListener("change", (e)=>{
+
+// const targetValue =e.target.value;
+  // console.log(targetValue);
+
+api.filter((arr,index,org)=>{
+ const arr1 = arr.category;
+
+//  return arr1 === targetValue;
+ console.log(arr1 === index);
+});
+
+
+
+// });
+// console.log(selvalue);
+
+// api.forEach(el => {
+  
+// });
+
+
+
+
+
+// return selvalue;
+  
+}
+test(apikey);
+
+
+
+
+
+
+
+
+
+
+// 
+
 function getApi(apiData) {
   const pBox = document.getElementById("pBox");
   pBox.innerHTML = "";
@@ -31,6 +78,10 @@ function getApi(apiData) {
     const apiTitle = api.title.toLowerCase();
     return apiTitle.includes(searchInput);
   });
+
+// console.log(searchFilter);
+
+
 
   searchFilter.forEach((api) => {
     // Card Div
@@ -98,7 +149,7 @@ function getApi(apiData) {
     pContainer.appendChild(btn);
   });
 
-  console.log(searchFilter);
+  // console.log(searchFilter);
 }
 
 document.getElementById("search").addEventListener("input", function () {
