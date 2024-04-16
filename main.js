@@ -1,91 +1,46 @@
+// ---------------------------Fetch Data------------------------------
+const getData = () => {
+  // const url = "https://api.escuelajs.co/api/v1/products";
+  const url =
+    "https://www.scorebat.com/video-api/v3/feed/?token=MTc5NzdfMTY1MDgwNjEyMF85Yjk1NTZjNDY5MWQ0MzczOGJlOGNiYTI2MWI4OGVkN2M2YzU4NmY3";
+
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log("true", data);
+      const dataFromApi = data.response;
+      // console.log(dataFromApi);
+
+      controller(dataFromApi);
+      // resultDisplay(dataFromApi);
+      // model(dataFromApi)
+    })
+    .catch((error) => {
+      console.log("error :>> ", error);
+    });
+};
 //
 
-function printCategoryToArray(api) {
-  const catSelect = document.querySelector("#byCat");
+// ---------------------------Functions Controller------------------------------
 
-  const uniqueByCategory = api.filter((value, index, array) => {
-    return (
-      array.findIndex((item) => item.category === value.category) === index
-    );
-  });
-
-  uniqueByCategory.forEach((e) => {
-    const opt = document.createElement("option");
-    opt.setAttribute("value", e.category);
-    opt.innerText = e.category;
-    catSelect.appendChild(opt);
-  });
+function controller(dataFromApi) {
+  resultDisplay(dataFromApi);
+  // model(dataFromApi);
+  createDropDown(dataFromApi);
+  seachByTwoSection(dataFromApi);
 }
 
-printCategoryToArray(apikey);
-
-//
-
-
-
-
-function test(api) {
-const selvalue = document.querySelector("#byCat");
-
-// selvalue.addEventListener("change", (e)=>{
-
-// const targetValue =e.target.value;
-  // console.log(targetValue);
-
-api.filter((arr,index,org)=>{
- const arr1 = arr.category;
-
-//  return arr1 === targetValue;
- console.log(arr1 === index);
-});
-
-
-
-// });
-// console.log(selvalue);
-
-// api.forEach(el => {
-  
-// });
-
-
-
-
-
-// return selvalue;
-  
-}
-test(apikey);
-
-
-
-
-
-
-
-
-
-
-// 
-
-function getApi(apiData) {
+// ---------------------------Card Design------------------------------
+//  Design Function
+function resultDisplay(dataFromApi) {
   const pBox = document.getElementById("pBox");
   pBox.innerHTML = "";
 
-  const searchInput = document.getElementById("search").value.toLowerCase();
-
-  const searchFilter = apiData.filter((api) => {
-    const apiTitle = api.title.toLowerCase();
-    return apiTitle.includes(searchInput);
-  });
-
-// console.log(searchFilter);
-
-
-
-  searchFilter.forEach((api) => {
+  dataFromApi.forEach((api, _i) => {
     // Card Div
-    var pContainer = document.createElement("div");
+    const pContainer = document.createElement("div");
     pContainer.classList.add(
       "col-10",
       "col-sm-6",
@@ -97,13 +52,12 @@ function getApi(apiData) {
       "border-1",
       "m-2"
     );
-    // pContainer.style.padding = "5px 20px";
     pBox.appendChild(pContainer);
 
     // Card Image
-    var pImg = document.createElement("img");
+    const pImg = document.createElement("img");
     pImg.classList.add("itemImg");
-    pImg.src = api.image;
+    pImg.src = api.thumbnail;
     pContainer.appendChild(pImg);
 
     // Card div
@@ -112,28 +66,28 @@ function getApi(apiData) {
     pContainer.appendChild(boxItem);
 
     //  Card Title P Tag
-    var pTitle = document.createElement("p");
+    const pTitle = document.createElement("p");
     pTitle.classList.add("p-item-title", "pra");
     pTitle.innerText = api.title;
     boxItem.appendChild(pTitle);
 
     //  Card Category P Tag
-    var pCat = document.createElement("p");
+    const pCat = document.createElement("p");
     pCat.classList.add("p-item-Cat", "pra");
-    pCat.innerText = api.category;
+    pCat.innerText = api.competition;
     boxItem.appendChild(pCat);
 
     //  Card Price Tag
-    var price = document.createElement("p");
+    const price = document.createElement("p");
     price.classList.add("p-item-price", "pra");
     price.innerText = "£" + api.price;
     boxItem.appendChild(price);
 
     // desc
-    var desc = document.createElement("p");
+    const desc = document.createElement("p");
     desc.classList.add("p-item-desc", "pra", "hide");
     desc.setAttribute("id", "description");
-    desc.innerText = api.description;
+    desc.innerText = api.competition;
     boxItem.appendChild(desc);
 
     //  Span Tag
@@ -143,35 +97,174 @@ function getApi(apiData) {
     desc.insertBefore(spn, firstChild);
 
     //  Card Button Tag
-    var btn = document.createElement("button");
-    btn.setAttribute("class", "btn btn-secondary sub-btn");
+    const btn = document.createElement("button");
+    btn.setAttribute("class", "btn btn-secondary sub-btn mbutton");
+    btn.setAttribute("data-bs-toggle", "modal");
+    btn.setAttribute("id", api.videos[0].id);
+    btn.setAttribute("data-bs-target", "#myModal");
     btn.innerText = "Details";
     pContainer.appendChild(btn);
   });
-
-  // console.log(searchFilter);
 }
 
-document.getElementById("search").addEventListener("input", function () {
-  getApi(apikey);
-});
+// ---------------------------Model Design------------------------------
+//  Model
 
-getApi(apikey);
+//     function model(dataFromApi) {
 
-//Check Box
+//       const modelBody = document.getElementById("modelBody");
 
-const description = document.querySelectorAll(".p-item-desc");
-const checkbox = document.getElementById("myCheckbox");
-checkbox.addEventListener("change", (event) => {
-  const checkBoxInput = event.currentTarget.checked;
+// const org = document.getElementById()
 
-  description.forEach((desc) => {
-    if (checkBoxInput === true) {
-      desc.classList.remove("hide");
-      // console.log("true");
-    } else {
-      desc.classList.add("hide");
-      // console.log("false");
-    }
+//       dataFromApi.filter((arr, index, org)=>{
+
+//         console.log(arr.videos[0].id === org);
+
+// })
+
+//       dataFromApi.forEach((api,)=>{
+
+//  // Card Div
+//  var modelContaint = document.createElement("div");
+//  modelContaint.classList.add(
+//    "col-10",
+//    "col-sm-6",
+//    "col-md-4",
+//    "col-lg-3",
+//    "col-xl-2",
+//    "d-inline-block",
+//    "border",
+//    "border-1",
+//    "m-2"
+//  );
+//  // modelContaint.style.padding = "5px 20px";
+//  modelBody.appendChild(modelContaint);
+
+//  // Card Image
+//  const mpImg = document.createElement("img");
+//  mpImg.classList.add("itemImg");
+//  mpImg.src = api.thumbnail;
+//  modelContaint.appendChild(mpImg);
+
+//  // Card div
+//  const mboxItem = document.createElement("div");
+//  mboxItem.setAttribute("class", "box-iteam");
+//  modelContaint.appendChild(mboxItem);
+
+//  //  Card Title P Tag
+//  const mpTitle = document.createElement("p");
+//  mpTitle.classList.add("p-item-title", "pra");
+//  mpTitle.innerText = api.title;
+//  mboxItem.appendChild(mpTitle);
+
+//  //  Card Category P Tag
+//  const mpCat = document.createElement("p");
+//  mpCat.classList.add("p-item-Cat", "pra");
+//  mpCat.innerText = api.competition;
+//  mboxItem.appendChild(mpCat);
+
+//  //  Card Price Tag
+//  const mprice = document.createElement("p");
+//  mprice.classList.add("p-item-price", "pra");
+//  mprice.innerText = "£" + api.price;
+//  mboxItem.appendChild(mprice);
+
+//  // desc
+//  const mdesc = document.createElement("p");
+//  mdesc.classList.add("p-item-desc", "pra", "hide");
+//  mdesc.setAttribute("id", "description");
+//  mdesc.innerText = api.description;
+//  mboxItem.appendChild(mdesc);
+
+//  //  Span Tag
+//  const mspn = document.createElement("span");
+//  mspn.innerText = "Details: ";
+//  const mfirstChild = mdesc.firstChild;
+//  mdesc.insertBefore(mspn, mfirstChild);
+//  //  Card Button Tag
+//  const mbtn = document.createElement("button");
+//  mbtn.setAttribute("class", "btn btn-secondary sub-btn");
+//  mbtn.setAttribute("id", api.videos[0].id);
+//  mbtn.innerText = "Details";
+//  modelContaint.appendChild(mbtn);
+
+//   });
+
+//     }
+
+//
+
+// ---------------------------Dropdown Design ------------------------------
+function createDropDown(dataFromApi) {
+  const catSelect = document.querySelector("#byCat");
+
+  const uniqueByCategory = dataFromApi.map((data) => {
+    return data.competition;
   });
-});
+
+  const uniqueCompetitionsArray = [...new Set(uniqueByCategory)];
+
+  uniqueCompetitionsArray.forEach((e) => {
+    const opt = document.createElement("option");
+    opt.setAttribute("value", e);
+    opt.innerText = e;
+    catSelect.appendChild(opt);
+  });
+}
+// ---------------------------Check Box Function------------------------------
+function checkBox() {
+  const description = document.querySelectorAll(".p-item-desc");
+  const checkbox = document.getElementById("myCheckbox");
+
+  checkbox.addEventListener("change", (event) => {
+    const checkBoxInput = event.currentTarget.checked;
+    description.forEach((desc) => {
+      if (checkBoxInput === true) {
+        desc.classList.remove("hide");
+        // console.log("true");
+      } else {
+        desc.classList.add("hide");
+        // console.log("false");
+      }
+    });
+  });
+}
+//
+// ---------------------------Test Section------------------------------
+function seachByTwoSection(dataFromApi) {
+  const inputValue = document.getElementById("search");
+  const selectValue = document.querySelector("#byCat");
+
+  inputValue.addEventListener("input", () => {
+    const filterValue = inputValue.value.trim().toLowerCase();
+    filterItems(dataFromApi, filterValue);
+  });
+
+  selectValue.addEventListener("change", () => {
+    const selectedCategory = selectValue.value;
+    dropdown(dataFromApi, selectedCategory);
+  });
+  checkBox();
+}
+
+function filterItems(dataFromApi, filterValue) {
+  const searchFilter = dataFromApi.filter((data) => {
+    const title = data.title.toLowerCase();
+    return title.includes(filterValue);
+  });
+
+  resultDisplay(searchFilter);
+  checkBox();
+}
+
+function dropdown(dataFromApi, selectedCategory) {
+  const searchFilter = dataFromApi.filter((data) => {
+    return data.competition === selectedCategory;
+  });
+
+  resultDisplay(searchFilter);
+  checkBox();
+}
+
+// fetch function called back
+getData();
