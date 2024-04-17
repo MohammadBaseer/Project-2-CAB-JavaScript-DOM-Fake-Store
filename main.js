@@ -30,7 +30,7 @@ function controller(dataFromApi) {
   resultDisplay(dataFromApi);
   // model(dataFromApi);
   createDropDown(dataFromApi);
-  seachByTwoSection(dataFromApi);
+  seachByTwoSectionEventListner(dataFromApi);
 }
 
 // ---------------------------Card Design------------------------------
@@ -233,21 +233,26 @@ function checkBox() {
 //
 
 
-// ---------------------------Test Section------------------------------
-function seachByTwoSection(dataFromApi) {
+// ---------------------------Filter Section------------------------------
+function seachByTwoSectionEventListner(dataFromApi) {
   const inputValue = document.getElementById("search");
   const selectValue = document.querySelector("#byCat");
 
   inputValue.addEventListener("input", () => {
     const filterValue = inputValue.value.trim().toLowerCase();
-    filterItems(dataFromApi, filterValue);
+    const dropDownAllValues = selectValue.value;
+
+
+    console.log("Input Section >> " + dropDownAllValues);
+
+
+    filterItems(dataFromApi, filterValue, dropDownAllValues);
   });
 
   selectValue.addEventListener("change", (e) => {
     const selectedCategory = selectValue.value;
 // It about dropdown all vlaue
     const dropDownAllValues = selectValue.value;
-    // console.log(typeof dropDownAllValues);
 // 
     dropdown(dataFromApi, selectedCategory, dropDownAllValues);
     // END
@@ -257,15 +262,29 @@ function seachByTwoSection(dataFromApi) {
   checkBox();
 }
 
-function filterItems(dataFromApi, filterValue) {
-  const searchFilter = dataFromApi.filter((data) => {
+
+function filterItems(dataFromApi, filterValue, dropDownAllValues) {
+
+
+  const searchFilter = dataFromApi.filter((data, index) => {
     const title = data.title.toLowerCase();
-    return title.includes(filterValue);
+
+if( dropDownAllValues === data.competition){
+console.log(index);
+return title.includes(filterValue);
+} 
+else if(dropDownAllValues === "all"){
+return title.includes(filterValue);
+}
+
   });
 
   resultDisplay(searchFilter);
   checkBox();
 }
+
+// ===========================END================
+
 
 function dropdown(dataFromApi, selectedCategory, dropDownAllValues) {
   const searchFilter = dataFromApi.filter((data) => {
