@@ -1,6 +1,7 @@
 // ---------------------------Fetch Data------------------------------
 const getData = () => {
   // const url = "https://api.escuelajs.co/api/v1/products";
+  // const url ="https://api.escuelajs.co/api/v1/products";
   const url =
     "https://www.scorebat.com/video-api/v3/feed/?token=MTc5NzdfMTY1MDgwNjEyMF85Yjk1NTZjNDY5MWQ0MzczOGJlOGNiYTI2MWI4OGVkN2M2YzU4NmY3";
 
@@ -230,6 +231,8 @@ function checkBox() {
   });
 }
 //
+
+
 // ---------------------------Test Section------------------------------
 function seachByTwoSection(dataFromApi) {
   const inputValue = document.getElementById("search");
@@ -240,10 +243,17 @@ function seachByTwoSection(dataFromApi) {
     filterItems(dataFromApi, filterValue);
   });
 
-  selectValue.addEventListener("change", () => {
+  selectValue.addEventListener("change", (e) => {
     const selectedCategory = selectValue.value;
-    dropdown(dataFromApi, selectedCategory);
+// It about dropdown all vlaue
+    const dropDownAllValues = selectValue.value;
+    // console.log(typeof dropDownAllValues);
+// 
+    dropdown(dataFromApi, selectedCategory, dropDownAllValues);
+    // END
   });
+
+
   checkBox();
 }
 
@@ -257,10 +267,21 @@ function filterItems(dataFromApi, filterValue) {
   checkBox();
 }
 
-function dropdown(dataFromApi, selectedCategory) {
+function dropdown(dataFromApi, selectedCategory, dropDownAllValues) {
   const searchFilter = dataFromApi.filter((data) => {
     return data.competition === selectedCategory;
   });
+
+
+  const data = dropDownAllValues;
+if(data === "all"){
+  console.log("All Data of Dropdown");
+  getData();
+}
+else
+{
+  "false"
+}
 
   resultDisplay(searchFilter);
   checkBox();

@@ -24,7 +24,7 @@ body {
   padding: 5px;
   margin: 20px auto;
   border-radius: 40px;
-  border: solid;
+  border: solid rgb(34 34 34);
   overflow: hidden;
 }
 ul {
@@ -42,6 +42,24 @@ ul li a {
   font-weight: bold;
   font-size: 1.2rem;
 }
+.search {
+  background-color: 2px rgb(20 20 20 / var(--tw-bg-opacity)) !important;
+  border: solid rgb(34 34 34) !important;
+  color: rgb(255 255 255) !important;
+}
+::placeholder {
+  color: rgb(255 255 255) !important;
+  opacity: 1; /* Firefox */
+}
+.byCat {
+  background-color: 2px rgb(20 20 20 / var(--tw-bg-opacity)) !important;
+  border: solid rgb(34 34 34) !important;
+  color: rgb(255 255 255) !important;
+}
+.byCat option {
+  color: rgb(34 34 34) !important;
+}
+
 p {
   margin-bottom: 2px;
 }
@@ -49,7 +67,7 @@ p > span {
   font-weight: bold;
 }
 .border {
-  border: solid 1px #1a1a1a !important;
+  border: solid rgb(34 34 34) !important;
   position: relative;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(250, 250, 250, 0.1);
