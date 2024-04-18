@@ -60,6 +60,16 @@ ul li a {
   color: rgb(34 34 34) !important;
 }
 
+label{
+  margin-right: 5px;
+}
+
+
+.show{
+
+  transition: display 3s !important;
+}
+
 p {
   margin-bottom: 2px;
 }

@@ -310,3 +310,11 @@ function dropdown(dataFromApi, selectedCategory, dropDownAllValues) {
 
 // fetch function called back
 getData();
+
+
+// show and hide 
+
+const collBtn = document.getElementById("collBtn").addEventListener("click", (e) =>{
+  document.getElementById("collHide").classList.toggle("show");
+
+} )
