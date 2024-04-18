@@ -1,28 +1,24 @@
 // ---------------------------Fetch Data------------------------------
 const getData = () => {
-  // const url = "https://api.escuelajs.co/api/v1/products";
-  // const url ="https://api.escuelajs.co/api/v1/products";
-  const url =
-    "https://www.scorebat.com/video-api/v3/feed/?token=MTc5NzdfMTY1MDgwNjEyMF85Yjk1NTZjNDY5MWQ0MzczOGJlOGNiYTI2MWI4OGVkN2M2YzU4NmY3";
-
+  // https://api.escuelajs.co/api/v1/products
+  // https://8c1080f56e4f4a9a.mokky.dev/products
+  // https://fakestoreapi.com/products
+  const url = "https://8c1080f56e4f4a9a.mokky.dev/testing";
   fetch(url)
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      // console.log("true", data);
-      const dataFromApi = data.response;
+      // console.log(data);
+      const dataFromApi = data;
       // console.log(dataFromApi);
-
       controller(dataFromApi);
-      // resultDisplay(dataFromApi);
-      // model(dataFromApi)
     })
     .catch((error) => {
-      console.log("error :>> ", error);
+      // console.error('There was a problem with the fetch operation:', error);
+      console.log(error);
     });
 };
-//
 
 // ---------------------------Functions Controller------------------------------
 
@@ -38,6 +34,8 @@ function controller(dataFromApi) {
 function resultDisplay(dataFromApi) {
   const pBox = document.getElementById("pBox");
   pBox.innerHTML = "";
+
+  // if (dataFromApi) {
 
   dataFromApi.forEach((api, _i) => {
     // Card Div
@@ -58,7 +56,7 @@ function resultDisplay(dataFromApi) {
     // Card Image
     const pImg = document.createElement("img");
     pImg.classList.add("itemImg");
-    pImg.src = api.thumbnail;
+    pImg.src = api.image;
     pContainer.appendChild(pImg);
 
     // Card div
@@ -75,7 +73,7 @@ function resultDisplay(dataFromApi) {
     //  Card Category P Tag
     const pCat = document.createElement("p");
     pCat.classList.add("p-item-Cat", "pra");
-    pCat.innerText = api.competition;
+    pCat.innerText = api.category;
     boxItem.appendChild(pCat);
 
     //  Card Price Tag
@@ -88,7 +86,7 @@ function resultDisplay(dataFromApi) {
     const desc = document.createElement("p");
     desc.classList.add("p-item-desc", "pra", "hide");
     desc.setAttribute("id", "description");
-    desc.innerText = api.competition;
+    desc.innerText = api.description;
     boxItem.appendChild(desc);
 
     //  Span Tag
@@ -101,12 +99,14 @@ function resultDisplay(dataFromApi) {
     const btn = document.createElement("button");
     btn.setAttribute("class", "btn btn-secondary sub-btn mbutton");
     btn.setAttribute("data-bs-toggle", "modal");
-    btn.setAttribute("id", api.videos[0].id);
+    btn.setAttribute("id", api.id);
     btn.setAttribute("data-bs-target", "#myModal");
     btn.innerText = "Details";
     pContainer.appendChild(btn);
   });
 }
+
+// }
 
 // ---------------------------Model Design------------------------------
 //  Model
@@ -144,7 +144,7 @@ function resultDisplay(dataFromApi) {
 //  // Card Image
 //  const mpImg = document.createElement("img");
 //  mpImg.classList.add("itemImg");
-//  mpImg.src = api.thumbnail;
+//  mpImg.src = api.category.image;
 //  modelContaint.appendChild(mpImg);
 
 //  // Card div
@@ -161,7 +161,7 @@ function resultDisplay(dataFromApi) {
 //  //  Card Category P Tag
 //  const mpCat = document.createElement("p");
 //  mpCat.classList.add("p-item-Cat", "pra");
-//  mpCat.innerText = api.competition;
+//  mpCat.innerText = api.category;
 //  mboxItem.appendChild(mpCat);
 
 //  //  Card Price Tag
@@ -199,18 +199,20 @@ function resultDisplay(dataFromApi) {
 function createDropDown(dataFromApi) {
   const catSelect = document.querySelector("#byCat");
 
-  const uniqueByCategory = dataFromApi.map((data) => {
-    return data.competition;
-  });
+  if (dataFromApi) {
+    const uniqueByCategory = dataFromApi.map((data) => {
+      return data.category;
+    });
 
-  const uniqueCompetitionsArray = [...new Set(uniqueByCategory)];
+    const uniqueCompetitionsArray = [...new Set(uniqueByCategory)];
 
-  uniqueCompetitionsArray.forEach((e) => {
-    const opt = document.createElement("option");
-    opt.setAttribute("value", e);
-    opt.innerText = e;
-    catSelect.appendChild(opt);
-  });
+    uniqueCompetitionsArray.forEach((e) => {
+      const opt = document.createElement("option");
+      opt.setAttribute("value", e);
+      opt.innerText = e;
+      catSelect.appendChild(opt);
+    });
+  }
 }
 // ---------------------------Check Box Function------------------------------
 function checkBox() {
@@ -219,6 +221,7 @@ function checkBox() {
 
   checkbox.addEventListener("change", (event) => {
     const checkBoxInput = event.currentTarget.checked;
+
     description.forEach((desc) => {
       if (checkBoxInput === true) {
         desc.classList.remove("hide");
@@ -229,78 +232,77 @@ function checkBox() {
       }
     });
   });
+
+  //  Turen of checkboxes during filter
+  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+  checkboxes.forEach((checkbox) => (checkbox.checked = false));
 }
 //
-
 
 // ---------------------------Filter Section------------------------------
 function seachByTwoSectionEventListner(dataFromApi) {
   const inputValue = document.getElementById("search");
   const selectValue = document.querySelector("#byCat");
+  // checkbox value filder
+  // const checkBoxValue = document.getElementById("myCheckbox").checked;
 
+  // console.log(checkBoxValue);
+
+  // =============================Input EventListener
   inputValue.addEventListener("input", () => {
     const filterValue = inputValue.value.trim().toLowerCase();
     const dropDownAllValues = selectValue.value;
 
-
-    console.log("Input Section >> " + dropDownAllValues);
-
+    // console.log("Input Section >> " + dropDownAllValues);
 
     filterItems(dataFromApi, filterValue, dropDownAllValues);
   });
-
+  // =====================================Drop Down EventListener=============
   selectValue.addEventListener("change", (e) => {
     const selectedCategory = selectValue.value;
-// It about dropdown all vlaue
+    // It about dropdown all vlaue
     const dropDownAllValues = selectValue.value;
-// 
+    //
     dropdown(dataFromApi, selectedCategory, dropDownAllValues);
     // END
   });
 
-
   checkBox();
 }
 
-
+//  ===========================Input Filter Function=========================
 function filterItems(dataFromApi, filterValue, dropDownAllValues) {
-
-
   const searchFilter = dataFromApi.filter((data, index) => {
     const title = data.title.toLowerCase();
 
-if( dropDownAllValues === data.competition){
-console.log(index);
-return title.includes(filterValue);
-} 
-else if(dropDownAllValues === "all"){
-return title.includes(filterValue);
-}
-
+    if (dropDownAllValues === data.category) {
+      // console.log(index);
+      return title.includes(filterValue);
+    } else if (dropDownAllValues === "all") {
+      return title.includes(filterValue);
+    }
   });
-
   resultDisplay(searchFilter);
+
+  // console.log(checkBoxValue);
+
   checkBox();
 }
 
 // ===========================END================
 
-
 function dropdown(dataFromApi, selectedCategory, dropDownAllValues) {
   const searchFilter = dataFromApi.filter((data) => {
-    return data.competition === selectedCategory;
+    return data.category === selectedCategory;
   });
 
-
   const data = dropDownAllValues;
-if(data === "all"){
-  console.log("All Data of Dropdown");
-  getData();
-}
-else
-{
-  "false"
-}
+  if (data === "all") {
+    console.log("All Data of Dropdown");
+    getData();
+  } else {
+    ("false");
+  }
 
   resultDisplay(searchFilter);
   checkBox();
