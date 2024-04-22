@@ -27,12 +27,17 @@ function controller(dataFromApi) {
   // model(dataFromApi);
   createDropDown(dataFromApi);
   createCheckBoxes(dataFromApi);
+  // Test
+
+  // checkBoxFunction(dataFromApi);
   seachByTwoSectionEventListner(dataFromApi);
 }
 
 // ---------------------------Card Design------------------------------
 //  Design Function
 function resultDisplay(dataFromApi) {
+  // console.log(dataFromApi);
+
   const pBox = document.getElementById("pBox");
   pBox.innerHTML = "";
 
@@ -107,99 +112,10 @@ function resultDisplay(dataFromApi) {
   });
 }
 
-// }
-
-// ---------------------------Model Design------------------------------
-//  Model
-
-//     function model(dataFromApi) {
-
-//       const modelBody = document.getElementById("modelBody");
-
-// const org = document.getElementById()
-
-//       dataFromApi.filter((arr, index, org)=>{
-
-//         console.log(arr.videos[0].id === org);
-
-// })
-
-//       dataFromApi.forEach((api,)=>{
-
-//  // Card Div
-//  var modelContaint = document.createElement("div");
-//  modelContaint.classList.add(
-//    "col-10",
-//    "col-sm-6",
-//    "col-md-4",
-//    "col-lg-3",
-//    "col-xl-2",
-//    "d-inline-block",
-//    "border",
-//    "border-1",
-//    "m-2"
-//  );
-//  // modelContaint.style.padding = "5px 20px";
-//  modelBody.appendChild(modelContaint);
-
-//  // Card Image
-//  const mpImg = document.createElement("img");
-//  mpImg.classList.add("itemImg");
-//  mpImg.src = api.category.image;
-//  modelContaint.appendChild(mpImg);
-
-//  // Card div
-//  const mboxItem = document.createElement("div");
-//  mboxItem.setAttribute("class", "box-iteam");
-//  modelContaint.appendChild(mboxItem);
-
-//  //  Card Title P Tag
-//  const mpTitle = document.createElement("p");
-//  mpTitle.classList.add("p-item-title", "pra");
-//  mpTitle.innerText = api.title;
-//  mboxItem.appendChild(mpTitle);
-
-//  //  Card Category P Tag
-//  const mpCat = document.createElement("p");
-//  mpCat.classList.add("p-item-Cat", "pra");
-//  mpCat.innerText = api.category;
-//  mboxItem.appendChild(mpCat);
-
-//  //  Card Price Tag
-//  const mprice = document.createElement("p");
-//  mprice.classList.add("p-item-price", "pra");
-//  mprice.innerText = "£" + api.price;
-//  mboxItem.appendChild(mprice);
-
-//  // desc
-//  const mdesc = document.createElement("p");
-//  mdesc.classList.add("p-item-desc", "pra", "hide");
-//  mdesc.setAttribute("id", "description");
-//  mdesc.innerText = api.description;
-//  mboxItem.appendChild(mdesc);
-
-//  //  Span Tag
-//  const mspn = document.createElement("span");
-//  mspn.innerText = "Details: ";
-//  const mfirstChild = mdesc.firstChild;
-//  mdesc.insertBefore(mspn, mfirstChild);
-//  //  Card Button Tag
-//  const mbtn = document.createElement("button");
-//  mbtn.setAttribute("class", "btn btn-secondary sub-btn");
-//  mbtn.setAttribute("id", api.videos[0].id);
-//  mbtn.innerText = "Details";
-//  modelContaint.appendChild(mbtn);
-
-//   });
-
-//     }
-
-//
-
 // ---------------------------Dropdown Design ------------------------------
 function createDropDown(dataFromApi) {
   const catSelect = document.querySelector("#byCat");
-  catSelect.innerText= "";
+  catSelect.innerText = "";
 
   //  --------- One option out side ofLoop Created ---
   const manualOpt = document.createElement("option");
@@ -207,17 +123,12 @@ function createDropDown(dataFromApi) {
   manualOpt.innerText = "Serach By All Category";
   catSelect.appendChild(manualOpt);
 
-
-
-
-
   if (dataFromApi) {
     const uniqueByCategory = dataFromApi.map((data) => {
       return data.category;
     });
 
     const uniqueCategoryArray = [...new Set(uniqueByCategory)];
-
 
     uniqueCategoryArray.forEach((e) => {
       const opt = document.createElement("option");
@@ -230,73 +141,68 @@ function createDropDown(dataFromApi) {
 // ---------------------------Sizes Check boxes Design ------------------------------
 function createCheckBoxes(dataFromApi) {
   const sizeDivSelect = document.querySelector("#sizes");
- sizeDivSelect.innerText= "";
+  sizeDivSelect.innerText = "";
 
-
-  const allcheck =[];
-  dataFromApi.forEach((checkData)=>{
-if (!allcheck.includes(checkData.sizes)) {
-  
-  if (checkData.sizes !== undefined) {
-  const sizeInputCheckBox = document.createElement("input");
+  const head6 = document.createElement("h6");
+  head6.innerText = "Sizes: ";
+  sizeDivSelect.appendChild(head6);
+  const allcheck = [];
+  dataFromApi.forEach((checkData) => {
+    if (!allcheck.includes(checkData.sizes)) {
+      if (checkData.sizes !== undefined) {
+        const sizeInputCheckBox = document.createElement("input");
         sizeInputCheckBox.setAttribute("class", "form-check-input sizes");
-        sizeInputCheckBox.setAttribute("onclick", "checkBoxFunction()");
+        // sizeInputCheckBox.setAttribute("onclick", "checkBoxFunction()");
+        sizeInputCheckBox.addEventListener("click", () =>
+          checkBoxFunction(dataFromApi)
+        );
         sizeInputCheckBox.setAttribute("type", "checkbox");
         sizeInputCheckBox.setAttribute("name", "flexRadioDefault");
         sizeInputCheckBox.setAttribute("value", checkData.sizes);
         sizeDivSelect.appendChild(sizeInputCheckBox);
-        
+
         const sizeLabel = document.createElement("label");
         sizeLabel.setAttribute("class", "form-check-label");
         sizeLabel.setAttribute("for", checkData.sizes);
-        sizeLabel.innerText = checkData.sizes ;
+        sizeLabel.innerText = checkData.sizes;
         sizeDivSelect.appendChild(sizeLabel);
-  } 
-   allcheck.push(checkData.sizes);
-
-}
-
-// if (allCheckCat.length == 0) {
-//   allCheckCat = allcheck;
-//     // console.log(allCheckCat);
-// }
-
-// if (allCheckCat.includes(checkData.sizes)) {
-//   // resultDisplay(allCheckCat=[])
-// }
-
-
-
-
-  })
-
+      }
+      allcheck.push(checkData.sizes);
+    }
+  });
 }
 // ---------------checkbox filter
-const checkBoxFunction = ()=>{
-  const sizeCheckboxes = document.querySelectorAll(".sizes")
-const checkdata = [];
-sizeCheckboxes.forEach((e)=>{
-  if (e.checked) {
-    checkdata.push(e.value);
+
+const checkBoxFunction = (dataFromApi) => {
+  const sizeCheckboxes = document.querySelectorAll(".sizes");
+  const checkdata = [];
+  sizeCheckboxes.forEach((e) => {
+    if (e.checked) {
+      checkdata.push(e.value);
+    }
+  });
+  // console.log(checkdata);
+
+  // console.log("Chck Bx   ", dataFromApi);
+
+  const filterArr = dataFromApi.filter((data) => {
+    let result = false;
+    checkdata.forEach((element) => {
+      if (element === data.sizes) {
+        result = true;
+      }
+    });
+    return result;
+  });
+
+  if (filterArr.length <= 0) {
+    console.log("no Data");
+    resultDisplay(dataFromApi);
+  } else {
+    resultDisplay(filterArr);
   }
-})
-console.log(checkdata);
-// resultDisplay(checkdata);
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // console.log(filterArr);
+};
 
 // ---------Description Check Box Function---------------------
 function checkBox() {
@@ -344,29 +250,27 @@ function seachByTwoSectionEventListner(dataFromApi) {
     dropdown(dataFromApi, selectedCategory, dropDownAllValues);
     // END
   });
-//  =================== Sizes Check Boxes EventListener ====================
+  //  =================== Sizes Check Boxes EventListener ====================
 
+  // const sizeCheckboxes = document.querySelectorAll(".sizes");
 
-// const sizeCheckboxes = document.querySelectorAll(".sizes");
+  // // Add event listener to each checkbox
+  // sizeCheckboxes.forEach(checkbox => {
+  //     checkbox.addEventListener("change", () => {
+  //         const selectedSizes = Array.from(sizeCheckboxes)
+  //             .filter(checkbox => checkbox.checked)
+  //             .map(checkbox => checkbox.value);
 
-// // Add event listener to each checkbox
-// sizeCheckboxes.forEach(checkbox => {
-//     checkbox.addEventListener("change", () => {
-//         const selectedSizes = Array.from(sizeCheckboxes)
-//             .filter(checkbox => checkbox.checked)
-//             .map(checkbox => checkbox.value);
-        
-//         // console.log(selectedSizes);
-//         // dropdown(dataFromApi, selectedCategory, dropDownAllValues, selectedSizes);
-//         filterSize(dataFromApi, selectedSizes);
-//     });
-// });
+  //         // console.log(selectedSizes);
+  //         // dropdown(dataFromApi, selectedCategory, dropDownAllValues, selectedSizes);
+  //         filterSize(dataFromApi, selectedSizes);
+  //     });
+  // });
 
-
-// 
+  //
   checkBox();
 }
-// 
+//
 // --------------------------------test
 
 // function filterSize(dataFromApi, selectedSizes) {
@@ -376,13 +280,8 @@ function seachByTwoSectionEventListner(dataFromApi) {
 //     return data.sizes === selectedSizes;
 //   });
 
-
 //   console.log(sizes);
 // }
-
-
-
-
 
 //  ===========================Input Filter Function=========================
 function filterItems(dataFromApi, filterValue, dropDownAllValues) {
@@ -424,11 +323,10 @@ function dropdown(dataFromApi, selectedCategory, dropDownAllValues) {
 
 // fetch function called back
 getData();
+// show and hide
 
-
-// show and hide 
-
-const collBtn = document.getElementById("collBtn").addEventListener("click", (e) =>{
-  document.getElementById("collHide").classList.toggle("show");
-
-} )
+const collBtn = document
+  .getElementById("collBtn")
+  .addEventListener("click", (e) => {
+    document.getElementById("collHide").classList.toggle("show");
+  });
