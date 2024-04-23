@@ -59,15 +59,15 @@ ul li a {
 .byCat option {
   color: rgb(34 34 34) !important;
 }
-
-label{
+#sizes{
+  text-align: center;
+}
+label {
   margin-right: 10px;
   margin-left: 3px;
 }
 
-
-.show{
-
+.show {
   transition: display 3s !important;
 }
 
@@ -154,4 +154,39 @@ p > span {
 
 .hide {
   display: none !important;
+}
+.notfounddiv{
+  text-align: center;
+  color: #fff;
+  display: none;
+}
+.notfound{
+  width: 200px; 
+  height: 200px;
+}
+/*  ------------------------- Products Page -------------- */
+/* .pSection {
+  position: static;
+} */
+.containt {
+  /* position: absolute;
+  border: solid rgb(97, 96, 96);
+  /* or absolute */
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(34 34 34);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  position: relative;
+}
+.imgs {
+  width: 100px !important;
+  height: 100px !important;
+  padding: 5px;
+}
+.pimgs {
+  width: 95%;
+  height: 300px;
 }

@@ -1,5 +1,7 @@
 // ---------------------------Fetch Data------------------------------
 const getData = () => {
+  const spinner = document.querySelector('.spinner-border');
+  spinner.style.display = 'block'; // Show the spinner
   // https://api.escuelajs.co/api/v1/products
   // https://8c1080f56e4f4a9a.mokky.dev/products
   // https://fakestoreapi.com/products
@@ -13,12 +15,15 @@ const getData = () => {
       const dataFromApi = data;
       // console.log(dataFromApi);
       controller(dataFromApi);
+      spinner.style.display = 'none'; // Hide the spinner once data is received
     })
     .catch((error) => {
       // console.error('There was a problem with the fetch operation:', error);
       console.log(error);
+      spinner.style.display = 'none'; // Hide the spinner once data is received
     });
 };
+
 
 // ---------------------------Functions Controller------------------------------
 
@@ -32,7 +37,15 @@ function controller(dataFromApi) {
   // checkBoxFunction(dataFromApi);
   seachByTwoSectionEventListner(dataFromApi);
 }
-
+//  reset input Function
+function resetInput() {
+  document.getElementById("search").value = "";
+}
+// 
+function displayNotFoundItem(display) {
+  const div = document.getElementById("notfounddiv");
+  div.style.display = display;
+}
 // ---------------------------Card Design------------------------------
 //  Design Function
 function resultDisplay(dataFromApi) {
@@ -127,7 +140,7 @@ function createDropDown(dataFromApi) {
   //  --------- One option out side ofLoop Created ---
   const manualOpt = document.createElement("option");
   manualOpt.setAttribute("value", "all");
-  manualOpt.innerText = "Serach By All Category";
+  manualOpt.innerText = "All Categories";
   catSelect.appendChild(manualOpt);
 
   if (dataFromApi) {
@@ -155,7 +168,7 @@ function createCheckBoxes(dataFromApi) {
   const selectValue = document.querySelector("#byCat");
   //
   const head6 = document.createElement("h6");
-  head6.innerText = "Sizes: ";
+  head6.innerText = "Sizes";
   sizeDivSelect.appendChild(head6);
   const allcheck = [];
   dataFromApi.forEach((checkData) => {
@@ -167,22 +180,15 @@ function createCheckBoxes(dataFromApi) {
         sizeInputCheckBox.addEventListener("click", () =>
           //
           {
+            //  Reset the Search Value
+            resetInput();
             // //
             const filterValue = inputValue.value.trim().toLowerCase();
             const dropDownAllValues = selectValue.value;
             // //
             const checkBoxValues = sizeInputCheckBox.value;
 
-            checkBoxFunction(
-              dataFromApi,
-              checkBoxValues,
-              filterValue,
-              dropDownAllValues
-            );
-
-            // test
-
-            // End Test
+            checkBoxFunction( dataFromApi, checkBoxValues, filterValue, dropDownAllValues );
           }
         );
         sizeInputCheckBox.setAttribute("type", "checkbox");
@@ -203,7 +209,11 @@ function createCheckBoxes(dataFromApi) {
 // ---------------checkbox filter
 
 const checkBoxFunction = (
-  dataFromApi, checkBoxValues, filterValue, dropDownAllValues) => {
+  dataFromApi,
+  checkBoxValues,
+  filterValue,
+  dropDownAllValues
+) => {
   const sizeCheckboxes = document.querySelectorAll(".sizes");
   const checkdata = [];
   sizeCheckboxes.forEach((e) => {
@@ -211,8 +221,10 @@ const checkBoxFunction = (
       checkdata.push(e.value);
     }
   });
+
   const filterArr = dataFromApi.filter((data) => {
     let result = false;
+
     if (data.category === dropDownAllValues || dropDownAllValues === "all") {
       checkdata.forEach((element) => {
         if (element === data.sizes) {
@@ -222,52 +234,60 @@ const checkBoxFunction = (
     }
     return result;
   });
-// 
-  if (filterArr.length <= 0) {
-    console.log("if runing");
+
+
+
+console.log(" filter ==== > ", filterArr.length)
+// to display msg
+
+//  let iteam = false;
+// if (!filterArr.length === 0 ) {
+//  console.log("display msg ======> No Iteam ")
+//  iteam = true;
+// }
+
+// return iteam;
+
+
+   //
+  if (filterArr.length === 0) {
+    console.log("Data ==== >>> if -- 1");
 
     const dropValue = dataFromApi.filter((dData) => {
       let result = false;
 
       if (dData.category === dropDownAllValues) {
         result = true;
-        console.log("Data ==== >>> ");
+        console.log("Data ==== >>> if -- 2");
       }
       return result;
     });
 
     if (dropDownAllValues === "all") {
       resultDisplay(dataFromApi);
+      console.log("Data ==== >>> if -- 3");
+
     } else {
-      console.log(dropValue);
       resultDisplay(dropValue);
+      console.log("Data ==== >>> else -- 1", dropValue.length);
     }
   } else {
     resultDisplay(filterArr);
-    console.log("else runing");
+    console.log("Data ==== >>> else -- 2");
   }
+
+
+
+
+
+
+
+
+ 
 };
 
 // ---------Description Check Box Function---------------------
 function checkBox() {
-  const description = document.querySelectorAll(".p-item-desc");
-  const checkbox = document.getElementById("myCheckbox");
-
-  checkbox.addEventListener("change", (event) => {
-    const checkBoxInput = event.currentTarget.checked;
-
-    description.forEach((desc) => {
-      if (checkBoxInput === true) {
-        desc.classList.remove("hide");
-        // console.log("true");
-      } else {
-        desc.classList.add("hide");
-        // console.log("false");
-      }
-    });
-  });
-
-  //  Turen of checkboxes during filter
   const checkboxes = document.querySelectorAll("input[type=checkbox]");
   checkboxes.forEach((checkbox) => (checkbox.checked = false));
 }
@@ -287,11 +307,14 @@ function seachByTwoSectionEventListner(dataFromApi) {
   });
   // =====================================Drop Down EventListener=============
   selectValue.addEventListener("change", (e) => {
+    //
+    const filterValue = inputValue.value.trim().toLowerCase();
+    //
     const selectedCategory = selectValue.value;
     // It about dropdown all vlaue
     const dropDownAllValues = selectValue.value;
     //
-    dropdown(dataFromApi, selectedCategory, dropDownAllValues);
+    dropdown(dataFromApi, selectedCategory, dropDownAllValues, filterValue);
     // END
   });
 
@@ -306,42 +329,72 @@ function filterItems(
   dropDownAllValues,
   checkBoxValues
 ) {
-  // console.log(checkBoxValues);
-
   const searchFilter = dataFromApi.filter((data, index) => {
     const title = data.title.toLowerCase();
 
     if (dropDownAllValues === data.category) {
-      // console.log(index);
+      
       return title.includes(filterValue);
     } else if (dropDownAllValues === "all") {
+      
       return title.includes(filterValue);
     }
   });
-  resultDisplay(searchFilter);
 
-  // console.log(checkBoxValue);
+  if (searchFilter.length === 0) {
+    displayNotFoundItem("block");
+  }
+  else{
+    displayNotFoundItem("none");
+  }
+
+  resultDisplay(searchFilter);
 
   checkBox();
 }
 
 // ===========================END================
 
-function dropdown(dataFromApi, selectedCategory, dropDownAllValues) {
+function dropdown(dataFromApi, selectedCategory, dropDownAllValues, filterValue ) {
+  // console.log(filterValue);
+
+  // Filter the data based on the selected category
   const searchFilter = dataFromApi.filter((data) => {
     return data.category === selectedCategory;
   });
 
-  const data = dropDownAllValues;
-  if (data === "all") {
+  // Filter based on input value and dropdown selection
+  const filteredData = searchFilter.filter((data) => {
+    // Filter by input value
+    const matchesFilterValue = data.title
+      .toLowerCase()
+      .includes(filterValue.toLowerCase());
+    // Filter by dropdown selection
+    const matchesDropdownValue =
+      dropDownAllValues === "all" || data.category === dropDownAllValues;
+
+    // Filter by checkboxes
+    const checkboxes = document.querySelectorAll(".sizes");
+    const matchesCheckboxes = Array.from(checkboxes).every((checkbox) => {
+      return !checkbox.checked || data.sizes.includes(checkbox.value);
+    });
+    // console.log("chk value ============>", matchesCheckboxes);
+
+    // Return true if both conditions match
+    return matchesFilterValue && matchesDropdownValue && matchesCheckboxes;
+  });
+
+  // Log all data if dropdown value is "all"
+  if (dropDownAllValues === "all") {
     console.log("All Data of Dropdown");
-    getData();
+    resetInput();
+    getData(); // Assuming getData() function retrieves all data
   } else {
-    ("false");
+    // console.log("Filtered Data:", filteredData); // Log filtered data
   }
 
-  resultDisplay(searchFilter);
-  checkBox();
+  resultDisplay(filteredData); // Display filtered data
+  // checkBox(); // Perform checkbox operations
 }
 
 // fetch function called back
