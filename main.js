@@ -95,6 +95,13 @@ function resultDisplay(dataFromApi) {
     desc.innerText = api.description;
     boxItem.appendChild(desc);
 
+    // sizes
+    const sizes = document.createElement("p");
+    sizes.classList.add("p-item-sizes", "pra");
+    sizes.setAttribute("id", "description");
+    sizes.innerText = api.sizes;
+    boxItem.appendChild(sizes);
+
     //  Span Tag
     const spn = document.createElement("span");
     spn.innerText = "Details: ";
@@ -143,6 +150,10 @@ function createCheckBoxes(dataFromApi) {
   const sizeDivSelect = document.querySelector("#sizes");
   sizeDivSelect.innerText = "";
 
+  //
+  const inputValue = document.getElementById("search");
+  const selectValue = document.querySelector("#byCat");
+  //
   const head6 = document.createElement("h6");
   head6.innerText = "Sizes: ";
   sizeDivSelect.appendChild(head6);
@@ -152,9 +163,27 @@ function createCheckBoxes(dataFromApi) {
       if (checkData.sizes !== undefined) {
         const sizeInputCheckBox = document.createElement("input");
         sizeInputCheckBox.setAttribute("class", "form-check-input sizes");
-        // sizeInputCheckBox.setAttribute("onclick", "checkBoxFunction()");
+
         sizeInputCheckBox.addEventListener("click", () =>
-          checkBoxFunction(dataFromApi)
+          //
+          {
+            // //
+            const filterValue = inputValue.value.trim().toLowerCase();
+            const dropDownAllValues = selectValue.value;
+            // //
+            const checkBoxValues = sizeInputCheckBox.value;
+
+            checkBoxFunction(
+              dataFromApi,
+              checkBoxValues,
+              filterValue,
+              dropDownAllValues
+            );
+
+            // test
+
+            // End Test
+          }
         );
         sizeInputCheckBox.setAttribute("type", "checkbox");
         sizeInputCheckBox.setAttribute("name", "flexRadioDefault");
@@ -173,7 +202,8 @@ function createCheckBoxes(dataFromApi) {
 }
 // ---------------checkbox filter
 
-const checkBoxFunction = (dataFromApi) => {
+const checkBoxFunction = (
+  dataFromApi, checkBoxValues, filterValue, dropDownAllValues) => {
   const sizeCheckboxes = document.querySelectorAll(".sizes");
   const checkdata = [];
   sizeCheckboxes.forEach((e) => {
@@ -181,27 +211,41 @@ const checkBoxFunction = (dataFromApi) => {
       checkdata.push(e.value);
     }
   });
-  // console.log(checkdata);
-
-  // console.log("Chck Bx   ", dataFromApi);
-
   const filterArr = dataFromApi.filter((data) => {
     let result = false;
-    checkdata.forEach((element) => {
-      if (element === data.sizes) {
-        result = true;
-      }
-    });
+    if (data.category === dropDownAllValues || dropDownAllValues === "all") {
+      checkdata.forEach((element) => {
+        if (element === data.sizes) {
+          result = true;
+        }
+      });
+    }
     return result;
   });
-
+// 
   if (filterArr.length <= 0) {
-    console.log("no Data");
-    resultDisplay(dataFromApi);
+    console.log("if runing");
+
+    const dropValue = dataFromApi.filter((dData) => {
+      let result = false;
+
+      if (dData.category === dropDownAllValues) {
+        result = true;
+        console.log("Data ==== >>> ");
+      }
+      return result;
+    });
+
+    if (dropDownAllValues === "all") {
+      resultDisplay(dataFromApi);
+    } else {
+      console.log(dropValue);
+      resultDisplay(dropValue);
+    }
   } else {
     resultDisplay(filterArr);
+    console.log("else runing");
   }
-  // console.log(filterArr);
 };
 
 // ---------Description Check Box Function---------------------
@@ -250,41 +294,20 @@ function seachByTwoSectionEventListner(dataFromApi) {
     dropdown(dataFromApi, selectedCategory, dropDownAllValues);
     // END
   });
-  //  =================== Sizes Check Boxes EventListener ====================
 
-  // const sizeCheckboxes = document.querySelectorAll(".sizes");
-
-  // // Add event listener to each checkbox
-  // sizeCheckboxes.forEach(checkbox => {
-  //     checkbox.addEventListener("change", () => {
-  //         const selectedSizes = Array.from(sizeCheckboxes)
-  //             .filter(checkbox => checkbox.checked)
-  //             .map(checkbox => checkbox.value);
-
-  //         // console.log(selectedSizes);
-  //         // dropdown(dataFromApi, selectedCategory, dropDownAllValues, selectedSizes);
-  //         filterSize(dataFromApi, selectedSizes);
-  //     });
-  // });
-
-  //
   checkBox();
 }
 //
-// --------------------------------test
-
-// function filterSize(dataFromApi, selectedSizes) {
-
-//   const sizes = dataFromApi.filter((data) => {
-//     console.log(data)
-//     return data.sizes === selectedSizes;
-//   });
-
-//   console.log(sizes);
-// }
 
 //  ===========================Input Filter Function=========================
-function filterItems(dataFromApi, filterValue, dropDownAllValues) {
+function filterItems(
+  dataFromApi,
+  filterValue,
+  dropDownAllValues,
+  checkBoxValues
+) {
+  // console.log(checkBoxValues);
+
   const searchFilter = dataFromApi.filter((data, index) => {
     const title = data.title.toLowerCase();
 
