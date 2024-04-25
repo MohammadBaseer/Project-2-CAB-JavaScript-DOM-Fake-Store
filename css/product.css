@@ -6,8 +6,19 @@
 body {
   --tw-bg-opacity: 1;
   background-color: rgb(20 20 20 / var(--tw-bg-opacity)) !important;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-
+footer{
+  background-color: #333;
+  color: white;
+  text-align: center;
+}
+.clr {
+  background-color: rgb(20 20 20) !important;
+}
 .main-nav {
   background-image: url(../img/1.svg);
   /* background-repeat: no-repeat; */
@@ -164,6 +175,7 @@ p > span {
   width: 200px; 
   height: 200px;
 }
+
 /*  ------------------------- Products Page -------------- */
 /* .pSection {
   position: static;
