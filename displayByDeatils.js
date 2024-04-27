@@ -42,3 +42,8 @@ displayDetailDiv.innerHTML =`<div class="row containt col-8" style="border: soli
 }
 
 productDetailData();
+
+
+document.querySelector(".mrBtn").addEventListener("click", ()=>{
+    document.querySelector('.collapse').classList.toggle('show');
+})

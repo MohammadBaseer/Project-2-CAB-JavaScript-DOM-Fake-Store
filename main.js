@@ -5,13 +5,15 @@ const getdata = async () => {
   try {
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     const apiData = data;
     controller(apiData);
     spinner("none");
   } catch (err) {
-    console.log(err);
+    // console.log(err);
+    msg(err);
     spinner("none");
+
   }
 };
 
@@ -23,18 +25,28 @@ const controller = (apiData) => {
   addFilter(apiData);
 };
 // Spinner Design
-function displayNotFoundItem(display) {
+const displayNotFoundItem=(display)=>{
   const div = document.getElementById("notfounddiv");
   div.style.display = display;
 }
 // spinner function
-function spinner(display) {
+const spinner= (display) => {
   const spinner = document.querySelector(".spinner-border");
   spinner.style.display = display; // Show the spinner
+}
+// Error Function when No Internet found
+const msg=(err)=>{
+  // console.log("=====>>",err.message);
+  document.querySelector(".msg").innerHTML = `<div id="notfounddiv" class="notfounddiv" style="display: block;">
+  <img class="notfound" src="./img/1.gif">
+  <h1>Err 404</h1>
+  <h2>${err.message}</h2>
+</div>`;
 }
 
 // Card Design
 const diplayResult = (apiData) => {
+  // Paging
   // Not fount Check
   if (apiData.length === 0) {
     displayNotFoundItem("block");
@@ -91,7 +103,7 @@ const createDropdown = (apiData) => {
       option.push(data.category);
     }
   });
-  console.log(option);
+  // console.log(option);
 };
 //
 
@@ -125,7 +137,7 @@ const createCheckBoxes = (apiData) => {
       checkBoxes.push(data.sizes);
     }
   });
-  console.log(checkBoxes);
+  // console.log(checkBoxes);
 };
 // ================================ Filter My Search
 const addFilter = (apiData) => {
@@ -133,11 +145,11 @@ const addFilter = (apiData) => {
   let dropDownValues = "all";
   let sizeValue = [];
 
+  // Filter Section
   const filterData = () => {
     let filteredData = apiData;
 
     // console.log(sizeValue);
-
     if (searchInputValue) {
       filteredData = filteredData.filter((data) =>
         data.title.toLowerCase().includes(searchInputValue)
@@ -155,10 +167,15 @@ const addFilter = (apiData) => {
     }
     diplayResult(filteredData);
   };
+// End Filter Section here
+
+
+
 
   // Input Search EventListener
   const inputSearch = document.querySelector("#search");
   inputSearch.addEventListener("input", (e) => {
+    // used trim() to remove whith spacing
     searchInputValue = inputSearch.value.trim().toLowerCase();
     filterData();
   });
@@ -195,4 +212,4 @@ sizesCollapse();
 
 getdata();
 
-//  Details Page JS Code
+
