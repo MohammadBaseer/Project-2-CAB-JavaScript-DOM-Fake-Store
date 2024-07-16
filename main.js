@@ -1,5 +1,5 @@
 const getData = async () => {
-  spinner("block");
+  // spinner("block");
   const url = "https://8c1080f56e4f4a9a.mokky.dev/testing";
 
   try {
