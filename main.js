@@ -1,4 +1,4 @@
-const getdata = async () => {
+const getData = async () => {
   spinner("block");
   const url = "https://8c1080f56e4f4a9a.mokky.dev/testing";
 
@@ -18,7 +18,7 @@ const getdata = async () => {
 
 // Controll
 const controller = (apiData) => {
-  diplayResult(apiData);
+  displayResult(apiData);
   createDropdown(apiData);
   createCheckBoxes(apiData);
   addFilter(apiData);
@@ -44,7 +44,7 @@ const msg = (err) => {
 };
 
 // Card Design
-const diplayResult = (apiData) => {
+const displayResult = (apiData) => {
   // Paging
   // Not fount Check
   if (apiData.length === 0) {
@@ -159,7 +159,7 @@ const addFilter = (apiData) => {
     if (sizeValue.length > 0) {
       filteredData = filteredData.filter((data) => sizeValue.includes(data.sizes));
     }
-    diplayResult(filteredData);
+    displayResult(filteredData);
   };
   // End Filter Section here
 
@@ -199,4 +199,4 @@ const sizesCollapse = () => {
 };
 sizesCollapse();
 
-getdata();
+getData();
