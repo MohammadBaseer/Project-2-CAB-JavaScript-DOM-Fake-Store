@@ -7,6 +7,7 @@ const getData = async () => {
     const data = await res.json();
     // console.log(data);
     const apiData = data;
+    console.log("apiData", apiData);
     controller(apiData);
     spinner("none");
   } catch (err) {
