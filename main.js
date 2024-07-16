@@ -13,7 +13,6 @@ const getdata = async () => {
     // console.log(err);
     msg(err);
     spinner("none");
-
   }
 };
 
@@ -25,24 +24,24 @@ const controller = (apiData) => {
   addFilter(apiData);
 };
 // Spinner Design
-const displayNotFoundItem=(display)=>{
+const displayNotFoundItem = (display) => {
   const div = document.getElementById("notfounddiv");
   div.style.display = display;
-}
+};
 // spinner function
-const spinner= (display) => {
+const spinner = (display) => {
   const spinner = document.querySelector(".spinner-border");
   spinner.style.display = display; // Show the spinner
-}
+};
 // Error Function when No Internet found
-const msg=(err)=>{
+const msg = (err) => {
   // console.log("=====>>",err.message);
   document.querySelector(".msg").innerHTML = `<div id="notfounddiv" class="notfounddiv" style="display: block;">
   <img class="notfound" src="./img/1.gif">
   <h1>Err 404</h1>
   <h2>${err.message}</h2>
 </div>`;
-}
+};
 
 // Card Design
 const diplayResult = (apiData) => {
@@ -124,6 +123,7 @@ const createCheckBoxes = (apiData) => {
         sizeInputCheckBox.setAttribute("class", "form-check-input sizes");
         sizeInputCheckBox.setAttribute("type", "checkbox");
         sizeInputCheckBox.setAttribute("name", "flexRadioDefault");
+        sizeInputCheckBox.setAttribute("id", data.sizes);
         sizeInputCheckBox.setAttribute("value", data.sizes);
         sizeDivSelect.appendChild(sizeInputCheckBox);
 
@@ -151,26 +151,17 @@ const addFilter = (apiData) => {
 
     // console.log(sizeValue);
     if (searchInputValue) {
-      filteredData = filteredData.filter((data) =>
-        data.title.toLowerCase().includes(searchInputValue)
-      );
+      filteredData = filteredData.filter((data) => data.title.toLowerCase().includes(searchInputValue));
     }
     if (dropDownValues !== "all") {
-      filteredData = filteredData.filter(
-        (data) => data.category === dropDownValues
-      );
+      filteredData = filteredData.filter((data) => data.category === dropDownValues);
     }
     if (sizeValue.length > 0) {
-      filteredData = filteredData.filter((data) =>
-        sizeValue.includes(data.sizes)
-      );
+      filteredData = filteredData.filter((data) => sizeValue.includes(data.sizes));
     }
     diplayResult(filteredData);
   };
-// End Filter Section here
-
-
-
+  // End Filter Section here
 
   // Input Search EventListener
   const inputSearch = document.querySelector("#search");
@@ -202,14 +193,10 @@ const addFilter = (apiData) => {
 };
 
 const sizesCollapse = () => {
-  const sizesCollapse = document
-    .getElementById("collBtn")
-    .addEventListener("click", (e) => {
-      document.getElementById("collHide").classList.toggle("show");
-    });
+  const sizesCollapse = document.getElementById("collBtn").addEventListener("click", (e) => {
+    document.getElementById("collHide").classList.toggle("show");
+  });
 };
 sizesCollapse();
 
 getdata();
-
-
