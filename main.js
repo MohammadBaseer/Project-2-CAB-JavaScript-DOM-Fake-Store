@@ -1,5 +1,5 @@
 const getData = async () => {
-  // spinner("block");
+  spinner("block");
   const url = "https://8c1080f56e4f4a9a.mokky.dev/testing";
 
   try {
@@ -195,7 +195,7 @@ const addFilter = (apiData) => {
 
 const sizesCollapse = () => {
   const sizesCollapse = document.getElementById("collBtn").addEventListener("click", (e) => {
-    document.getElementById("collHide").classList.toggle("show");
+    document.getElementById("collHide").classList.toggle("hide");
   });
 };
 sizesCollapse();
